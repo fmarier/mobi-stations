@@ -25,6 +25,7 @@ import argparse
 import gzip
 import io
 import json
+import sys
 from urllib.request import Request, urlopen
 
 from lxml import html
@@ -53,7 +54,7 @@ def print_station(ref, data):
     print("  %s" % osm_link(data["latitude"], data["longitude"]))
 
 
-def print_stations(verbose):
+def print_stations(verbose, quiet):
     array = 'all_stations = ['
 
     need_newline = False
@@ -66,9 +67,23 @@ def print_stations(verbose):
 
     array = array[:-2] + ']'
 
+    if not quiet:
+        if need_newline:
+            print()
+        print(array)
+
+
+def print_stats(quiet):
+    need_newline = False
+    if not quiet:
+        print("Known stations: %s" % len(KNOWN_STATIONS))
+        print("Stations advertised: %s" % len(stations))
+        need_newline = True
+    if len(new_stations):
+        print("New stations: %s" % len(new_stations))
+        need_newline = True
     if need_newline:
-        print()
-    print(array)
+        print("")
 
 
 def process_markers(markers):
@@ -120,16 +135,18 @@ def main():
         description='Display the list of all Mobi stations as shown on %s.' % MOBI_URL)
     parser.add_argument('-v', '--verbose', dest='verbose', action='store_true',
                         help='display all station details')
+    parser.add_argument('-q', '--quiet', dest='quiet', action='store_true',
+                        help='suppres output unless there are new stations')
     parser.add_argument('-V', '--version', action='version',
                         version='station_list %s' % VERSION)
     args = parser.parse_args()
+    if args.verbose and args.quiet:
+        print("Error: --quiet and --verbose are mutually exclusive", file=sys.stderr)
+        return False
 
-    print("Known stations: %s" % len(KNOWN_STATIONS))
     process_html(download_html(MOBI_URL))
-    print("Station advertised: %s" % len(stations))
-    print("New stations: %s" % len(new_stations))
-    print("")
-    print_stations(args.verbose)
+    print_stats(args.quiet)
+    print_stations(args.verbose, args.quiet)
 
 if main():
     exit(0)
