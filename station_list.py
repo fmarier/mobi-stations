@@ -60,7 +60,8 @@ def print_stations(verbose, quiet):
     need_newline = False
     for ref in sorted(stations.keys()):
         data = stations[ref]
-        array += '"' + ref + '", '
+        if ref != "0000":  # leave temporary stations out
+            array += '"' + ref + '", '
         if verbose or ref in new_stations:
             print_station(ref, data)
             need_newline = True
@@ -89,8 +90,14 @@ def print_stats(quiet):
 def process_markers(markers):
     for marker in markers:
         if not marker["poi"]:
-            ref = marker["title"][0:4]
-            name = marker["title"][5:]
+            # Temporary station
+            ref = '0000'
+            name = marker["title"]
+            if marker["title"][0] != '-' and marker["title"][4] == ' ':
+                # Permanent station
+                ref = marker["title"][0:4]
+                name = marker["title"][5:]
+
             capacity = marker["total_slots"]
             latitude = marker["latitude"]
             longitude = marker["longitude"]
