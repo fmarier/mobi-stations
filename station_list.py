@@ -153,7 +153,7 @@ def main():
 
     process_html(download_html(MOBI_URL))
     print_stats(args.quiet)
-    print_stations(args.verbose, args.quiet)
+    # print_stations(args.verbose, args.quiet)
 
 if main():
     exit(0)
