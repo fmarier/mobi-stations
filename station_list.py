@@ -5,7 +5,7 @@ station_list - List all Mobi bike share stations.
 Displays the list of all Mobi stations as shown on
 https://www.mobibikes.ca/en#the-map.
 
-Copyright (C) 2016  Francois Marier <francois@fmarier.org>
+Copyright (C) 2016, 2017  Francois Marier <francois@fmarier.org>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -34,6 +34,7 @@ VERSION = '0.1'
 MOBI_URL = 'https://www.mobibikes.ca/en#the-map'
 
 KNOWN_STATIONS = ["0001", "0002", "0004", "0005", "0006", "0007", "0008", "0009", "0010", "0011", "0012", "0014", "0015", "0016", "0017", "0019", "0024", "0025", "0026", "0027", "0028", "0030", "0031", "0032", "0033", "0036", "0037", "0039", "0040", "0041", "0044", "0047", "0048", "0050", "0052", "0053", "0054", "0055", "0057", "0058", "0060", "0063", "0064", "0065", "0066", "0067", "0068", "0069", "0070", "0071", "0072", "0073", "0075", "0076", "0077", "0078", "0079", "0080", "0081", "0082", "0083", "0088", "0089", "0092", "0093", "0096", "0106", "0107", "0108", "0109", "0110", "0112", "0113", "0114", "0115", "0125", "0130", "0133", "0134", "0137", "0138", "0147", "0148", "0150", "0151", "0154", "0155", "0159", "0165", "0166", "0167", "0171", "0172", "0173", "0174", "0176", "0187", "0196", "0201"]
+KNOWN_DISUSED_STATIONS = ["0129"]
 
 # pylint: disable=invalid-name
 stations = {}
@@ -49,6 +50,8 @@ def print_station(ref, data):
     print("%s:" % ref)
     print("  name=%s" % data["name"])
     print("  capacity=%s" % data["capacity"])
+    if data["disused"]:
+        print("  disused=yes")
     print("  latitude=%s" % data["latitude"])
     print("  longitude=%s" % data["longitude"])
     print("  %s" % osm_link(data["latitude"], data["longitude"]))
@@ -58,7 +61,7 @@ def print_stations(verbose, quiet):
     array = 'all_stations = ['
 
     need_newline = False
-    for ref in sorted(stations.keys()):
+    for ref in sorted(stations):
         data = stations[ref]
         if ref != "0000":  # leave temporary stations out
             array += '"' + ref + '", '
@@ -78,6 +81,7 @@ def print_stats(quiet):
     need_newline = False
     if not quiet:
         print("Known stations: %s" % len(KNOWN_STATIONS))
+        print("Known disused stations: %s" % len(KNOWN_DISUSED_STATIONS))
         print("Stations advertised: %s" % len(stations))
         need_newline = True
     if len(new_stations):
@@ -101,13 +105,17 @@ def process_markers(markers):
             capacity = marker["total_slots"]
             latitude = marker["latitude"]
             longitude = marker["longitude"]
+            disused = marker["operative"] != '1'
             stations[ref] = {
                 "name": name,
                 "capacity": capacity,
+                "disused": disused,
                 "latitude": latitude,
                 "longitude": longitude
             }
-            if ref not in KNOWN_STATIONS:
+            if not disused and ref not in KNOWN_STATIONS:
+                new_stations.append(ref)
+            elif disused and ref not in KNOWN_DISUSED_STATIONS:
                 new_stations.append(ref)
 
 
@@ -154,6 +162,7 @@ def main():
     process_html(download_html(MOBI_URL))
     print_stats(args.quiet)
     print_stations(args.verbose, args.quiet)
+
 
 if main():
     exit(0)
