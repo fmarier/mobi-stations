@@ -26,6 +26,7 @@ import gzip
 import io
 import json
 import sys
+from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
 from lxml import html
@@ -159,7 +160,12 @@ def main():
         print("Error: --quiet and --verbose are mutually exclusive", file=sys.stderr)
         return False
 
-    process_html(download_html(MOBI_URL))
+    try:
+        process_html(download_html(MOBI_URL))
+    except HTTPError as e:
+        print("Error while downloading the map: %s" % e, file=sys.stderr)
+        return False
+
     print_stats(args.quiet)
     print_stations(args.verbose, args.quiet)
 
