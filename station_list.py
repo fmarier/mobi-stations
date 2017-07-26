@@ -40,6 +40,7 @@ KNOWN_DISUSED_STATIONS = []
 # pylint: disable=invalid-name
 stations = {}
 new_stations = []
+all_stations = []
 
 
 def osm_link(latitude, longitude):
@@ -59,23 +60,27 @@ def print_station(ref, data):
 
 
 def print_stations(verbose, quiet):
-    array = 'all_stations = ['
-
     need_newline = False
     for ref in sorted(stations):
         data = stations[ref]
-        if ref != "0000":  # leave temporary stations out
-            array += '"' + ref + '", '
         if verbose or ref in new_stations:
             print_station(ref, data)
             need_newline = True
 
-    array = array[:-2] + ']'
+    if len(KNOWN_STATIONS) != len(all_stations):
+        if need_newline:
+            print()
+            need_newline = False
+
+        for ref in sorted(KNOWN_STATIONS):
+            if ref not in all_stations:
+               print("%s is no longer advertised" % ref)
+               need_newline = True
 
     if not quiet:
         if need_newline:
             print()
-        print(array)
+        print(sorted(all_stations))
 
 
 def print_stats(quiet):
@@ -118,6 +123,8 @@ def process_markers(markers):
                 new_stations.append(ref)
             elif disused and ref not in KNOWN_DISUSED_STATIONS:
                 new_stations.append(ref)
+            if ref != "0000":  # leave temporary stations out
+                all_stations.append(ref)
 
 
 def process_script(script):
