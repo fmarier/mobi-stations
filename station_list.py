@@ -168,11 +168,13 @@ all_stations = []
 
 
 def osm_link(latitude, longitude):
+    """Return OSM link for a given lattidue and longitude."""
     zoom_level = 17
     return "https://www.openstreetmap.org/?mlat=%s&mlon=%s#map=%s/%s/%s" % (latitude, longitude, zoom_level, latitude, longitude)
 
 
 def print_station(ref, data):
+    """Output all station metadata."""
     print("%s:" % ref)
     print("  name=%s" % data["name"])
     print("  capacity=%s" % data["capacity"])
@@ -184,6 +186,7 @@ def print_station(ref, data):
 
 
 def print_stations(verbose, quiet):
+    """Output all stations with their metadata along with deleted stations."""
     need_newline = False
     for ref in sorted(stations):
         data = stations[ref]
@@ -208,6 +211,7 @@ def print_stations(verbose, quiet):
 
 
 def print_stats(quiet):
+    """Output a summary of the number of known and advertised stations."""
     need_newline = False
     if not quiet:
         print("Known stations: %s" % len(KNOWN_STATIONS))
@@ -222,6 +226,7 @@ def print_stats(quiet):
 
 
 def process_markers(markers):
+    """Parse the markers extracted from the config of the Mobi homepage."""
     for marker in markers:
         if not marker["poi"]:
             # Temporary station
@@ -252,6 +257,7 @@ def process_markers(markers):
 
 
 def process_script(script):
+    """Extract metadata out of the Drupal settings variable."""
     text = script.replace('jQuery.extend(Drupal.settings, ', '')
     text = text.replace('});', '}')
     data = json.loads(text)
@@ -259,6 +265,7 @@ def process_script(script):
 
 
 def process_html(page):
+    """Extract the Drupal config out of the Mobi homepage."""
     tree = html.fromstring(page)
     scripts = tree.xpath('//script/text()')
     for script in scripts:
@@ -267,6 +274,7 @@ def process_html(page):
 
 
 def download_html(url):
+    """Download the HTML from the Mobi homepage in an efficient way."""
     request = Request(url, headers={'Accept-encoding': 'gzip'})
     response = urlopen(request)
 
@@ -278,6 +286,7 @@ def download_html(url):
 
 
 def main():
+    """Parse arguments and start the whole process."""
     parser = argparse.ArgumentParser(
         description='Display the list of all Mobi stations as shown on %s.' % MOBI_URL)
     parser.add_argument('-v', '--verbose', dest='verbose', action='store_true',

@@ -7,9 +7,9 @@ pyflakes:
 	@echo Running pyflakes...
 	@pyflakes3 *.py
 
-pep257:
-	@echo Running pep257...
-	@pep257 *.py
+docstyle:
+	@echo Running pydocstyle...
+	@pydocstyle *.py
 
 pep8:
 	@echo Running pep8...
@@ -23,4 +23,4 @@ lint:
 	@echo Running pylint...
 	@pylint3 --rcfile=.pylintrc *.py
 
-test: pep8 pyflakes lint codespell
+test: pep8 docstyle pyflakes lint codespell
