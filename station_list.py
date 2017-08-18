@@ -74,8 +74,8 @@ def print_stations(verbose, quiet):
 
         for ref in sorted(KNOWN_STATIONS):
             if ref not in all_stations:
-               print("%s is no longer advertised" % ref)
-               need_newline = True
+                print("%s is no longer advertised" % ref)
+                need_newline = True
 
     if not quiet:
         if need_newline:
