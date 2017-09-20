@@ -160,6 +160,7 @@ KNOWN_STATIONS = [
     "0218",
 ]
 KNOWN_DISUSED_STATIONS = [
+    "0016", # until 2017-09-22
     "0026",
     "0031", # until 2017-09-20
     "0114",
