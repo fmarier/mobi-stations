@@ -161,6 +161,7 @@ KNOWN_STATIONS = [
 ]
 KNOWN_DISUSED_STATIONS = [
     "0137", # until 2017-10-18
+    "0150",
 ]
 
 # pylint: disable=invalid-name
