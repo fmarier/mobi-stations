@@ -160,7 +160,6 @@ KNOWN_STATIONS = [
     "0602",
 ]
 KNOWN_DISUSED_STATIONS = [
-    "0137", # until 2017-10-18
     "0150",
 ]
 
