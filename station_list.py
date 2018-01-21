@@ -26,7 +26,7 @@ import gzip
 import io
 import json
 import sys
-from urllib.error import HTTPError
+from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
 from lxml import html
@@ -305,6 +305,9 @@ def main():
     try:
         process_html(download_html(MOBI_URL))
     except HTTPError as e:
+        print("Error while downloading the map: %s" % e, file=sys.stderr)
+        return False
+    except URLError as e:
         print("Error while downloading the map: %s" % e, file=sys.stderr)
         return False
 
