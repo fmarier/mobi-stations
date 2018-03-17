@@ -5,7 +5,7 @@ station_list - List all Mobi bike share stations.
 Displays the list of all Mobi stations as shown on
 https://www.mobibikes.ca/en#the-map.
 
-Copyright (C) 2016, 2017  Francois Marier <francois@fmarier.org>
+Copyright (C) 2016, 2017, 2018  Francois Marier <francois@fmarier.org>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
