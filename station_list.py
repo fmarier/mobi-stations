@@ -295,7 +295,7 @@ def process_markers(markers):
                 new_stations.append(ref)
             elif disused and ref not in KNOWN_DISUSED_STATIONS:
                 new_stations.append(ref)
-            if ref != "0000":  # leave temporary stations out
+            if ref != "0000" and ref != "1000":  # leave temporary stations out
                 all_stations.append(ref)
 
 
