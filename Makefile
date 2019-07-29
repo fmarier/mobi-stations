@@ -13,7 +13,7 @@ docstyle:
 
 pep8:
 	@echo Running pep8...
-	@pep8 --ignore=E501 *.py
+	@pycodestyle --ignore=E501 *.py
 
 codespell:
 	@echo Running codespell...
