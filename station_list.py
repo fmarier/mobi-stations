@@ -5,7 +5,7 @@ station_list - List all Mobi bike share stations.
 Displays the list of all Mobi stations as shown on
 https://www.mobibikes.ca/en#the-map.
 
-Copyright (C) 2016, 2017, 2018  Francois Marier <francois@fmarier.org>
+Copyright (C) 2016, 2017, 2018, 2019  Francois Marier <francois@fmarier.org>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -287,7 +287,7 @@ def print_stats(quiet):
         print("Known disused stations: %s" % len(KNOWN_DISUSED_STATIONS))
         print("Stations advertised: %s" % len(stations))
         need_newline = True
-    if len(new_stations):
+    if new_stations:
         print("New stations: %s" % len(new_stations))
         need_newline = True
     if need_newline:
@@ -321,7 +321,7 @@ def process_markers(markers):
                 new_stations.append(ref)
             elif disused and ref not in KNOWN_DISUSED_STATIONS:
                 new_stations.append(ref)
-            if ref != "0000" and ref != "1000":  # leave temporary stations out
+            if ref not in ("0000", "1000"):  # leave temporary stations out
                 all_stations.append(ref)
 
 
@@ -380,6 +380,7 @@ def main():
 
     print_stats(args.quiet)
     print_stations(args.verbose, args.quiet)
+    return True
 
 
 if main():
