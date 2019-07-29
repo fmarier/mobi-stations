@@ -317,12 +317,15 @@ def process_markers(markers):
                 "latitude": latitude,
                 "longitude": longitude
             }
+
+            if ref in ("0000", "1000"):  # leave temporary stations out
+                continue
+
+            all_stations.append(ref)
             if not disused and ref not in KNOWN_STATIONS:
                 new_stations.append(ref)
             elif disused and ref not in KNOWN_DISUSED_STATIONS:
                 new_stations.append(ref)
-            if ref not in ("0000", "1000"):  # leave temporary stations out
-                all_stations.append(ref)
 
 
 def process_script(script):
