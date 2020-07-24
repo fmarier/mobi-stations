@@ -25,6 +25,7 @@ import argparse
 import gzip
 import io
 import json
+import ssl
 import sys
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
@@ -356,8 +357,13 @@ def process_html(page):
 
 def download_html(url):
     """Download the HTML from the Mobi homepage in an efficient way."""
+    # Disable all certificate checking because the Mobi TLS config is garbage.
+    context = ssl.create_default_context()
+    context.check_hostname = False
+    context.verify_mode = ssl.CERT_NONE
+
     request = Request(url, headers={'Accept-encoding': 'gzip'})
-    response = urlopen(request)
+    response = urlopen(request, context=context)
 
     if response.info().get('Content-Encoding') == 'gzip':
         buf = io.BytesIO(response.read())
