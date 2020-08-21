@@ -402,6 +402,6 @@ def main():
 
 
 if main():
-    exit(0)
+    sys.exit(0)
 else:
-    exit(1)
+    sys.exit(1)
