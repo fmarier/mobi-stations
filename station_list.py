@@ -30,7 +30,7 @@ import sys
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
-from lxml import html
+from lxml import html  # nosec
 
 VERSION = '0.1'
 MOBI_URL = 'https://www.mobibikes.ca/en#the-map'
@@ -363,7 +363,7 @@ def download_html(url):
     context.verify_mode = ssl.CERT_NONE
 
     request = Request(url, headers={'Accept-encoding': 'gzip'})
-    response = urlopen(request, context=context)
+    response = urlopen(request, context=context)  # nosec
 
     if response.info().get('Content-Encoding') == 'gzip':
         buf = io.BytesIO(response.read())

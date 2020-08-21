@@ -23,4 +23,8 @@ lint:
 	@echo Running pylint...
 	@pylint --rcfile=.pylintrc *.py
 
-test: pep8 docstyle pyflakes lint codespell
+bandit:
+	@echo Running bandit...
+	@bandit --quiet -r .
+
+test: pep8 docstyle pyflakes lint codespell bandit
