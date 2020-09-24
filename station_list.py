@@ -189,7 +189,6 @@ KNOWN_STATIONS = [
     "0223",
     "0224",
     "0225",
-    "0227",
     "0228",
     "0229",
     "0230",
@@ -241,7 +240,6 @@ KNOWN_DISUSED_STATIONS = [
     "0082",
     "0129",
     "0211",
-    "0227",
 ]
 
 # pylint: disable=invalid-name
