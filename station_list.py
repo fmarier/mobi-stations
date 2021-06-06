@@ -240,6 +240,7 @@ KNOWN_STATIONS = [
 KNOWN_DISUSED_STATIONS = [
     "0082",
     "0093",
+    "0133",
     "0154",
     "0167",
 ]
