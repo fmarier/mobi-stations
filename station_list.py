@@ -330,7 +330,7 @@ def process_markers(markers):
                 "longitude": longitude
             }
 
-            if ref in ("0000", "1000"):  # leave temporary stations out
+            if ref in ("0000", "0997", "1000"):  # leave temporary stations out
                 continue
 
             all_stations.append(ref)
